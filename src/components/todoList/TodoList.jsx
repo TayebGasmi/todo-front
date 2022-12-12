@@ -1,21 +1,23 @@
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { Delete } from "@mui/icons-material";
 import React from "react";
-import { ListItemButton, ListItemIcon } from "@mui/material";
+import List from "../List/List";
+import TodoForm from "./../Form/Form";
 const TodoList = () => {
   return (
-    <List>
-      <ListItem>
-        <ListItemText primary="Todo 1" />
-        <ListItemButton>
-          <ListItemIcon>
-            <Delete />
-          </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-    </List>
+    <div className="containerr">
+      <div className="d-flex gap-5">
+        <div className="app-wrapper">
+          <div className="header">
+            <h1>Todo List</h1>
+          </div>
+          <div>
+            <TodoForm />
+          </div>
+          <div>
+            <List />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 export default TodoList;

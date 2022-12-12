@@ -2,9 +2,9 @@ import AxiosInstance from "../utils/axiosInstance";
 export const login = async (values) => {
   try {
     const response = await AxiosInstance.post("/auth/login", values);
-    localStorage.setItem("token", response.data.token);
-    return response.data;
-  } catch (error) {
+    const { status } = response;
+    return status;
+  } catch (e) {
     return;
   }
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { registerSchema } from "../../schemas/user.schema";
+import { sendResetPasswordEmailSchema } from "../../schemas/user.schema";
 import InputText from "../../layout/form/input/InputText";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -12,29 +12,19 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
-import PasswordInput from "../../layout/form/input/PasswordInput";
 import { Link as RouteLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { register } from "../../api/auth";
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  password: "",
-  email: "",
-  phone: "",
-  confirmPassword: "",
-};
-
-const SignUpForm = () => {
-  const navigate = useNavigate();
+import { sendResetPasswordEmail } from "./../../api/resetPassword";
+const RestePasswordToken = () => {
+  const initialValues = {
+    email: "",
+  };
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={registerSchema}
+      validationSchema={sendResetPasswordEmailSchema}
       onSubmit={async (values) => {
         try {
-          await register(values);
-          navigate("/login");
+          await sendResetPasswordEmail(values);
         } catch (err) {
           console.log(err);
         }
@@ -78,31 +68,11 @@ const SignUpForm = () => {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign up
+                Reset Password
               </Typography>
               <Form>
                 <Stack sx={{ mt: 1 }} spacing={2}>
-                  <Stack direction="row" spacing={2}>
-                    <InputText
-                      type="text"
-                      name="firstName"
-                      placeholder="First Name"
-                    />
-                    <InputText
-                      type="text"
-                      name="lastName"
-                      placeholder="Last Name"
-                    />
-                  </Stack>
                   <InputText type="text" name="email" placeholder="Email" />
-                  <InputText type="text" name="phone" placeholder="Phone" />
-                  <PasswordInput name="password" placeholder="Password" />
-                  <PasswordInput
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                  />
-
                   <Button
                     fullWidth
                     variant="contained"
@@ -110,22 +80,22 @@ const SignUpForm = () => {
                     sx={{ mt: 3, mb: 2 }}
                     type="submit"
                   >
-                    Sign Up
+                    send email to reset your password
                   </Button>
 
                   <Grid container>
                     <Grid item xs>
-                      <Link
-                        component={RouteLink}
-                        to="/resetPassword"
-                        variant="body2"
-                      >
-                        Forgot password?
+                      <Link component={RouteLink} to="/login" variant="body2">
+                        Sign in ?
                       </Link>
                     </Grid>
                     <Grid item>
-                      <Link component={RouteLink} to="/login" variant="body2">
-                        {"login "}
+                      <Link
+                        component={RouteLink}
+                        to="/register"
+                        variant="body2"
+                      >
+                        {"Don't have an account? Sign Up"}
                       </Link>
                     </Grid>
                   </Grid>
@@ -139,4 +109,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default RestePasswordToken;

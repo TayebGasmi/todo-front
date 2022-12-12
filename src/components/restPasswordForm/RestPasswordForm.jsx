@@ -14,7 +14,11 @@ import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/material";
 import PasswordInput from "../../layout/form/input/PasswordInput";
 import { Link as RouteLink } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { resetPassword } from "./../../api/resetPassword";
 const RestPasswordForm = () => {
+  const { token, user } = useParams();
+  const navigate = useNavigate();
   const initialValues = {
     password: "",
     confirmPassword: "",
@@ -24,8 +28,13 @@ const RestPasswordForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={restPasswordSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={async (values) => {
+        try {
+          await resetPassword(values, user, token);
+          navigate("/login");
+        } catch (err) {
+          console.log(err);
+        }
       }}
     >
       {({ isSubmitting }) => (
@@ -70,7 +79,6 @@ const RestPasswordForm = () => {
               </Typography>
               <Form>
                 <Stack sx={{ mt: 1 }} spacing={2}>
-                  <InputText type="text" name="email" placeholder="Email" />
                   <PasswordInput name="password" placeholder="Password" />
                   <PasswordInput
                     name="confirmPassword"
@@ -79,7 +87,6 @@ const RestPasswordForm = () => {
                   <Button
                     fullWidth
                     variant="contained"
-                    disabled={isSubmitting}
                     sx={{ mt: 3, mb: 2 }}
                     type="submit"
                   >

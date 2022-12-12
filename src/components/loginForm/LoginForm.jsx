@@ -26,9 +26,17 @@ const LoginForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={loginSchema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { errors, setErrors }) => {
         try {
-          await login(values);
+          const status = await login(values);
+          console.log(status);
+          if (status !== 200) {
+            setErrors({
+              email: "wrong password or email",
+              password: "wrong password or email",
+            });
+            return;
+          }
           navigate("/");
         } catch (err) {
           console.log(err);
@@ -92,7 +100,7 @@ const LoginForm = () => {
                     <Grid item xs>
                       <Link
                         component={RouteLink}
-                        to="/restPassword"
+                        to="/resetPassword"
                         variant="body2"
                       >
                         Forgot password?
